@@ -1,22 +1,28 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="bg-gray-300 h-screen flex sm:bg-red-100 md:bg-green-100 lg:cyan-100 items-center justify-center p-5 ">
-      <div className="bg-white shadow-lg p-5 rounded-3xl w-full max-w-screen-sm flex flex-col gap-4 ">
-        {["Nico", "Me", "You", "Yourself"].map((person, index) => (
-          <div key={index} className="flex items-center group gap-5">
-            <div className="size-10 bg-blue-400 rounded-full" />
-            <span className=" text-lg font-medium empty:w-24 empty:h-5 empty:rounded-full empty:animate-pulse empty:bg-gray-300 group-hover:text-red-500">
-              {person}
-            </span>
-            <div className="size-6  bg-red-500 text-white flex items-center justify-center rounded-full relative">
-              <span className="z-10">{index}</span>
-              <div className="size-6 bg-red-500 rounded-full absolute animate-ping" />
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col items-center justi min-h-screen p-6">
+      <div className="my-auto flex flex-col items-center gap-2 *:font-medium">
+        <span>🥕</span>
+        <h1>Carrot</h1>
+        <h2>Welcome to CarrotMarket</h2>
       </div>
-    </main>
+      <div className="flex flex-col items-center gap-3 w-full py-2.5 rounded-md text-center">
+        <Link
+          href="/create-account"
+          className="w-full bg-orange-500 text-white text-lg font-medium py-2.5 rounded-md text-center hover:bg-orange-400 transition-colors "
+        >
+          Start
+        </Link>
+        <div className="flex gap-2 ">
+          <span>Do you have account?</span>
+          <Link href="/login" className="hover:underline underline-offset-2">
+            Login
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
