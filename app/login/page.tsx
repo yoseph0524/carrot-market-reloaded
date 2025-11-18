@@ -6,7 +6,7 @@ import SocialLogin from "@/components/social-login";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { handleForm } from "./action";
+import { handleForm } from "./actions";
 
 export default function LogIn() {
   const [state, action] = useFormState(handleForm, null);
