@@ -22,7 +22,7 @@ const formSchema = z
         (username) => !username.includes("potato"),
         "No potatoes allowed!"
       ),
-    email: z.string().email().toLowerCase(),
+    email: z.string().toLowerCase(),
     password: z
       .string()
       .min(4)
