@@ -1,11 +1,11 @@
 "use client";
 import Button from "@/components/button";
 import Input from "@/components/input";
-import { smsVerification } from "./action";
+import { smsLogIn } from "./action";
 import { useFormState } from "react-dom";
 
 export default function SMSLogin() {
-  const [state, dispatch] = useFormState(smsVerification, null);
+  const [state, dispatch] = useFormState(smsLogIn, null);
 
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
@@ -21,10 +21,12 @@ export default function SMSLogin() {
           name={"phone"}
         />
         <Input
-          type="number"
+          type="text"
           placeholder="Verification code"
           required
           name={"token"}
+          min={1000000}
+          max={999999}
         />
         <Button text="Verify" />
       </form>
