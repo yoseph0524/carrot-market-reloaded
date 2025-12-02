@@ -7,6 +7,9 @@ import {
 import db from "lib/db";
 import bycrypt from "bcrypt";
 import { z } from "zod";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const checkUsername = (username: string) => !username.includes("potato");
 
@@ -97,6 +100,13 @@ export async function createAccount(prevState: any, formData: FormData) {
     console.log(user);
 
     // log the user in
-    // redirect "/home"
+    const cookie = await getIronSession(cookies(), {
+      cookieName: "delicious-karrot",
+      password: process.env.COOKIE_PASSWORD!,
+    });
+    //@ts-ignore
+    cookie.id = user.id;
+    await cookie.save();
+    redirect("/profile");
   }
 }
