@@ -5,6 +5,7 @@ import {
   PASSWORD_REGEX_ERROR,
 } from "lib/constants";
 import db from "lib/db";
+import bycrypt from "bcrypt";
 import { z } from "zod";
 
 const checkUsername = (username: string) => !username.includes("potato");
@@ -26,11 +27,6 @@ const checkUniqueUsername = async (username: string) => {
       id: true,
     },
   });
-  // if (user) {
-  //   return false;
-  // } else {
-  //   return true;
-  // }
   return !Boolean(user);
 };
 
@@ -88,8 +84,18 @@ export async function createAccount(prevState: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    // hash password
-    // save the user to db
+    const hashedPassword = await bycrypt.hash(result.data.password, 12);
+
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: result.data.password,
+      },
+      select: { id: true },
+    });
+    console.log(user);
+
     // log the user in
     // redirect "/home"
   }
