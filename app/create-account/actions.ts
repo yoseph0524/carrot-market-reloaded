@@ -9,6 +9,7 @@ import bycrypt from "bcrypt";
 import { check, z } from "zod";
 import { redirect } from "next/navigation";
 import getSession from "lib/session";
+import logIn from "lib/login";
 
 const checkUsername = (username: string) => !username.includes("potato");
 
@@ -106,9 +107,6 @@ export async function createAccount(prevState: any, formData: FormData) {
     });
     console.log(user);
 
-    const session = await getSession();
-    session.id = user.id;
-    await session.save();
-    redirect("/profile");
+    await logIn(user.id);
   }
 }
