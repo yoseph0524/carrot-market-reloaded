@@ -5,12 +5,12 @@ import { redirect } from "next/navigation";
 import db from "lib/db";
 import crypto from "crypto";
 import getSession from "lib/session";
-
+import twilio from "twilio";
 const phoneSchema = z
   .string()
   .trim()
   .refine(
-    (phone) => validator.isMobilePhone(phone, "ko-KR"),
+    (phone) => validator.isMobilePhone(phone, "en-US"),
     "Wrong phone format"
   );
 
@@ -90,6 +90,15 @@ export async function smsLogIn(prevState: ActionState, formData: FormData) {
         },
       });
 
+      const client = twilio(
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN
+      );
+      await client.messages.create({
+        body: `Your Karrot verification code is: ${token}`,
+        from: process.env.TWILIO_PHONE_NUMBER!,
+        to: process.env.MY_PHONE_NUMBER!,
+      });
       return {
         token: true,
       };
