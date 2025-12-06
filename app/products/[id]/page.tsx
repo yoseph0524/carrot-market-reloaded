@@ -108,10 +108,10 @@ export default async function ProductDetail({
     <div>
       <div className="relative aspect-square">
         <Image
+          className="object-cover"
           fill
           src={product.photo}
           alt={product.title}
-          className="rounded-xl shadow-lg"
         />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-700 bg-gradient-to-r from-orange-100 to-red-100">
