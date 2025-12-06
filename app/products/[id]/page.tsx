@@ -115,7 +115,7 @@ export default async function ProductDetail({
         />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-700 bg-gradient-to-r from-orange-100 to-red-100">
-        <div className="size-10 rounded-full overflow-hidden border-2 border-orange-400">
+        <div className="size-10 rounded-full  border-2 border-orange-400">
           {product.user.avatar !== null ? (
             <Image
               src={product.user.avatar}
