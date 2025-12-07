@@ -110,7 +110,7 @@ export default async function ProductDetail({
         <Image
           className="object-cover"
           fill
-          src={`${product.photo}/public`}
+          src={product.photo}
           alt={product.title}
         />
       </div>
