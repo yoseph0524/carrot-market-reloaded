@@ -23,11 +23,11 @@ function DeletedBanner() {
   );
 }
 
-const getCachedProducts = nextCache(getInitialProducts, ["home-products"]);
+const getCachedProducts = nextCache(getInitialProducts, ["home-products"], {
+  revalidate: 60,
+});
 
 async function getInitialProducts() {
-  console.log("hit");
-
   const products = await db.product.findMany({
     select: {
       title: true,
