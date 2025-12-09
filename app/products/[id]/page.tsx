@@ -12,7 +12,6 @@ async function getIsOwner(userId: number) {
   if (session.id) {
     return session.id === userId;
   }
-
   return false;
 }
 
@@ -31,6 +30,13 @@ async function getProduct(id: number) {
     },
   });
   return product;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getProduct(Number(params.id));
+  return {
+    title: product?.title,
+  };
 }
 
 async function deleteProduct(formData: FormData) {
