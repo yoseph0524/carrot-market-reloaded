@@ -3,6 +3,7 @@ import db from "lib/db";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { unstable_cache as nextCache } from "next/cache";
 
 function DeletedBanner() {
   return (
@@ -22,7 +23,11 @@ function DeletedBanner() {
   );
 }
 
+const getCachedProducts = nextCache(getInitialProducts, ["home-products"]);
+
 async function getInitialProducts() {
+  console.log("hit");
+
   const products = await db.product.findMany({
     select: {
       title: true,
@@ -52,7 +57,7 @@ export default async function Products({
 }: {
   searchParams?: { deleted?: string };
 }) {
-  const initialProducts = await getInitialProducts();
+  const initialProducts = await getCachedProducts();
   return (
     <div>
       {searchParams?.deleted === "1" && <DeletedBanner />}
