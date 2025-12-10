@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -16,6 +17,7 @@ async function getIsOwner(userId: number) {
 }
 
 async function getProduct(id: number) {
+  console.log("product");
   const product = await db.product.findUnique({
     where: {
       id,
@@ -31,9 +33,29 @@ async function getProduct(id: number) {
   });
   return product;
 }
+const getCachedProduct = nextCache(getProduct, ["product-detail"], {
+  tags: ["product-detail"],
+});
+
+async function getProductTitle(id: number) {
+  console.log("title");
+  const product = await db.product.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      title: true,
+    },
+  });
+  return product;
+}
+
+const getCachedProductTitle = nextCache(getProductTitle, ["product-title"], {
+  tags: ["product-title"],
+});
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const product = await getProduct(Number(params.id));
+  const product = await getCachedProductTitle(Number(params.id));
   return {
     title: product?.title,
   };
@@ -100,7 +122,7 @@ export default async function ProductDetail({
   if (isNaN(id)) {
     return notFound();
   }
-  const product = await getProduct(id);
+  const product = await getCachedProduct(id);
   if (!product) {
     return notFound();
   }
@@ -109,7 +131,10 @@ export default async function ProductDetail({
     select: { userId: true },
   });
   const isOwner = await getIsOwner(productWithUserId?.userId ?? 0);
-
+  const revalidate = async () => {
+    "use server";
+    revalidateTag("xxxx");
+  };
   return (
     <div>
       <div className="relative aspect-square">
@@ -153,12 +178,11 @@ export default async function ProductDetail({
         {isOwner ? (
           <form action={deleteProduct} className="inline">
             <input type="hidden" name="id" value={product.id} />
-            <button
-              type="submit"
-              className="bg-gradient-to-r from-red-500 to-orange-500 px-5 py-2.5 rounded-md text-white font-semibold shadow hover:scale-105 transition"
-            >
-              Delete Product
-            </button>
+            <form action={revalidate}>
+              <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                Revalidate title cache
+              </button>
+            </form>
           </form>
         ) : null}
         <Link

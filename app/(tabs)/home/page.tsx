@@ -50,12 +50,15 @@ export const metadata = {
   title: "Product",
 };
 
+// export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
 export default async function Products({
   searchParams,
 }: {
   searchParams?: { deleted?: string };
 }) {
-  const initialProducts = await getCachedProducts();
+  const initialProducts = await getInitialProducts();
   const revalidate = async () => {
     "use server";
     revalidatePath("/home");
