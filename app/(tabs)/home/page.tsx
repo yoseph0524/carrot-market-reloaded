@@ -34,7 +34,7 @@ async function getInitialProducts() {
       photo: true,
       id: true,
     },
-    // take: 1,
+    take: 1,
     orderBy: {
       created_at: "desc",
     },
@@ -51,7 +51,7 @@ export const metadata = {
 };
 
 // export const dynamic = "force-dynamic";
-export const revalidate = 60;
+// export const revalidate = 60;
 
 export default async function Products({
   searchParams,
