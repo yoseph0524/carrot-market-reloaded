@@ -66,10 +66,7 @@ export default async function Products({
   return (
     <div>
       {searchParams?.deleted === "1" && <DeletedBanner />}
-      <form action={revalidate}>
-        {" "}
-        <button> Revalidate</button>
-      </form>
+
       <ProductList initialProducts={initialProducts} />
 
       <Link
